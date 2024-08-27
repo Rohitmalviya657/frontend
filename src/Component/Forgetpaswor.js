@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import './Auth.css'; // Common CSS file for all forms
 
-function Forget({ setActiveComponent }) {
+function Fforget({ setActiveComponent }) {
     const [forgetData, setForgetData] = useState({
         email: '',
         password: '',
@@ -63,4 +63,4 @@ function Forget({ setActiveComponent }) {
     );
 }
 
-export default Forget;
+export default Fforget;

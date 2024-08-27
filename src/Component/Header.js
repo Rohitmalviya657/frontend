@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css'; // Import the CSS file
+import './Header.css';
 
-function Header({ onLogout }) {
+function Header({ onLogout, role }) {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
-        <div className="header-container">
+        <div className={`header-container ${menuOpen ? 'menu-open' : ''}`}>
+            <div className="menu-icon" onClick={toggleMenu}>
+                &#9776;
+            </div>
             <Link to="/profile" className="header-link">
-                <small>Profile</small> </Link>
-
+                <small>Profile</small>
+            </Link>
             <Link to="/" className="header-link">
                 <small>Home</small>
             </Link>
@@ -17,8 +26,11 @@ function Header({ onLogout }) {
             <Link to="/contact" className="header-link">
                 <small>Contact Us</small>
             </Link>
-            <Link to="/login/signup" className="header-link">
-                <small onClick={onLogout}>Logout</small>
+            <Link to="/confirm" className="header-link">
+                <small>View Booking</small>
+            </Link>
+            <Link to="/" className="header-link" onClick={onLogout}>
+                <small>Logout</small>
             </Link>
         </div>
     );

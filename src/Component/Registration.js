@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import './Auth.css'
+import './Auth.css';
 
 function Registration({ setActiveComponent }) {
     const [registerData, setRegisterData] = useState({
         username: '',
         email: '',
         contact: '',
-        loginid: '',
         password: '',
-        adharnumber: ''
+        adharnumber: '',
+        type: ''
     });
 
     const handleRegisterChange = (e) => {
@@ -20,12 +20,17 @@ function Registration({ setActiveComponent }) {
     };
 
     const handleRegisterSubmit = async (e) => {
-        // e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:4000/user/signup', registerData);
-            console.log(response);
+        e.preventDefault();
 
+        const url = registerData.type === 'user' ?
+            'http://localhost:4000/user/signup' :
+            'http://localhost:4000/owner/signup';
+
+        try {
+            const response = await axios.post(url, registerData);
+            console.log(response.data);
             alert('Registration successful!');
+            setActiveComponent('login'); // Switch to login after registration
         } catch (err) {
             console.error(err);
             alert('Registration failed.');
@@ -39,6 +44,7 @@ function Registration({ setActiveComponent }) {
                     type="text"
                     name="username"
                     placeholder="Username"
+                    value={registerData.username}
                     onChange={handleRegisterChange}
                     required
                 />
@@ -46,6 +52,7 @@ function Registration({ setActiveComponent }) {
                     type="email"
                     name="email"
                     placeholder="Email address"
+                    value={registerData.email}
                     onChange={handleRegisterChange}
                     required
                 />
@@ -53,13 +60,7 @@ function Registration({ setActiveComponent }) {
                     type="text"
                     name="contact"
                     placeholder="Contact"
-                    onChange={handleRegisterChange}
-                    required
-                />
-                <input
-                    type="text"
-                    name="loginid"
-                    placeholder="Login ID"
+                    value={registerData.contact}
                     onChange={handleRegisterChange}
                     required
                 />
@@ -67,6 +68,7 @@ function Registration({ setActiveComponent }) {
                     type="password"
                     name="password"
                     placeholder="Password"
+                    value={registerData.password}
                     onChange={handleRegisterChange}
                     required
                 />
@@ -74,9 +76,23 @@ function Registration({ setActiveComponent }) {
                     type="text"
                     name="adharnumber"
                     placeholder="Adhar Number"
+                    value={registerData.adharnumber}
                     onChange={handleRegisterChange}
                     required
                 />
+                <select
+                    name="type"
+                    className="form-select form-select-sm"
+                    aria-label=".form-select-sm example"
+                    value={registerData.type}
+                    onChange={handleRegisterChange}
+                    required
+                >
+                    <option value="" disabled>Select type</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+
                 <button type="submit" className="auth-button">Sign Up</button>
                 <hr />
                 <button type="button" className="switch-link" onClick={() => setActiveComponent('login')}>

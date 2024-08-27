@@ -15,14 +15,34 @@
     justify-content: center;
     color: white;
     /* Adjust text color for better visibility */
+    text-align: center;
+    /* Center text for better readability */
+    padding: 20px;
+    /* Add padding to prevent content from touching edges */
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
 }
 
-.auth-section {
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent background for contrast */
-    padding: 20px;
-    border-radius: 8px;
-    width: 28%;
-    max-width: 500px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+    .home-page-content {
+        background-size: cover;
+        /* Ensure image covers the container */
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page-content {
+        padding: 15px;
+        /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .home-page-content {
+        padding: 10px;
+        /* Further adjust padding for very small screens */
+        font-size: 14px;
+        /* Adjust font size for smaller screens */
+    }
 }
