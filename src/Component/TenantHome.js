@@ -32,16 +32,81 @@ function TenantHome() {
         }, []);
     };
 
-    const roomsInRows = chunkArray(catogorylist, 3);
+    const roomsInRows = chunkArray(catogorylist, 4);
 
-    const handleBookRoom = (roomId) => {
-        navigate('/payment', { state: { roomid: roomId } });
+    const handleBookRoom = async (room) => {
+        try {
+
+            const { data: { order } } = await axios.post('http://localhost:4000/api/addroom', { amount: room.price * 100 });
+            openRazorpay(order, room);
+        } catch (error) {
+            console.error('Error creating Razorpay order:', error);
+        }
+
+    };
+    const openRazorpay = (order, room,) => {
+        const options = {
+            key: 'rzp_test_StX0f9E3xLkdGH', // Replace with your Razorpay key
+            amount: order.amount,
+            currency: 'INR',
+            name: 'Fitness App',
+            description: `Payment for ${room.price}`,
+            order_id: order.id,
+            handler: async (response) => {
+                try {
+                    // const token = localStorage.getItem('token'); // Retrieve the token
+                    // console.log(token)
+                    // await axios.post('http://localhost:5000/exercises/addmyexercises', {
+                    //   headers: {
+                    //     'Content-Type': 'application/json',
+                    //     'tokenInput': token // Pass the token in the header
+                    //   },
+
+                    //   exerciseId: exercise.id,
+                    //   razorpayPaymentId: response.razorpay_payment_id,
+                    // });
+                    const token = localStorage.getItem('token'); // Retrieve the token
+                    console.log(token)
+
+                    await axios.post('http://localhost:4000/api/addpay',
+                        {
+                            amount: room.price,
+                            roomId: room.id,
+                            razorpayPaymentId: response.razorpay_payment_id,
+                        },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'tokenInput': token// Pass the token in the header
+                            }
+
+                        });
+                    alert('Exercise added to My Room!');
+                } catch (error) {
+                    console.error('Error adding exercise to My Exercises:', error);
+                }
+            },
+            prefill: {
+                name: 'User Name',
+                email: 'user@example.com',
+                contact: '9165920512',
+            },
+            notes: {
+                address: 'User Address',
+            },
+            theme: {
+                color: '#3399cc',
+            },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
     };
 
 
 
     return (
-        <div className='home-container overlay'>
+        <div className='home-container overlay' style={{}}>
             {roomsInRows.map((row, rowIndex) => (
                 <div className="container mt-4" key={rowIndex}>
                     <div className="row">
@@ -54,7 +119,8 @@ function TenantHome() {
                                         <h5 className="card-title">Size: {room.size}</h5>
                                         <h5 className="card-title">Location: {room.location}</h5>
                                         <h5 className="card-title">Description: {room.description}</h5>
-                                        <button className="btn btn-primary" onClick={() => handleBookRoom(room.id)}> Book Room </button>
+                                        <button className="btn btn-primary" onClick={() => handleBookRoom(room)}> Book Room </button>
+
 
                                     </div>
                                 </div>

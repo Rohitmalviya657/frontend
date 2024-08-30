@@ -31,6 +31,7 @@ function Login({ setActiveComponent, onLogin }) {
         try {
             const response = await axios.post(url, loginData);
             console.log(response.data);
+            localStorage.setItem("token", response.data.token);
             alert('Login successful!');
             const role = loginData.type === 'user' ? 'tenant' : 'landlord';
             setUser(response.data.user);
