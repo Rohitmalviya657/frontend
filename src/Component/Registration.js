@@ -90,7 +90,7 @@ function Registration({ setActiveComponent }) {
                 >
                     <option value="" disabled>Select type</option>
                     <option value="user">User</option>
-                    <option value="admin">Admin</option>
+                    <option value="admin">Landlord</option>
                 </select>
 
                 <button type="submit" className="auth-button">Sign Up</button>

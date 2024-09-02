@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css';
 
-function Header({ onLogout, role }) {
+
+function Headerr({ onLogout, role }) {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -14,9 +14,6 @@ function Header({ onLogout, role }) {
             <div className="menu-icon" onClick={toggleMenu}>
                 &#9776;
             </div>
-            <Link to="/profile" className="header-link">
-                <small>Profile</small>
-            </Link>
             <Link to="/" className="header-link">
                 <small>Home</small>
             </Link>
@@ -26,14 +23,14 @@ function Header({ onLogout, role }) {
             <Link to="/contact" className="header-link">
                 <small>Contact Us</small>
             </Link>
-            <Link to="/viewbooking" className="header-link">
-                <small>View Booking</small>
+            <Link to="/ourServices" className="header-link">
+                <small>Our Services</small>
             </Link>
-            <Link to="/" className="header-link" onClick={onLogout}>
-                <small>Logout</small>
+            <Link to="/signIn" className="header-link">
+                <small>SignIn</small>
             </Link>
         </div>
     );
 }
 
-export default Header;
+export default Headerr;
