@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './book.css';
 
-const Myexercise = () => {
+const MyExercise = () => {
     const [myExercises, setMyExercises] = useState([]);
 
     useEffect(() => {
@@ -15,8 +15,8 @@ const Myexercise = () => {
                         'tokenInput': token
                     }
                 });
+                console.log(response.data); // Inspect the data to ensure unique imgUrls
                 setMyExercises(response.data);
-                console.log(response.data);
 
             } catch (error) {
                 console.error('Error fetching my exercises:', error);
@@ -31,11 +31,11 @@ const Myexercise = () => {
             <h2>Booked Room</h2>
             <div className="exercise-grid">
                 {myExercises.map((myExercise, index) => (
-                    <div key={index} className="exercise-card">
+                    <div key={myExercise.id || index} className="exercise-card">
                         {myExercise && myExercise.room ? (
                             <>
                                 <img
-                                    src={myExercise.room.imgUrl || 'default-image-url.jpg'}
+                                    src={`${myExercise.room.imgUrl}?${new Date().getTime()}` || 'default-image-url.jpg'}
                                     alt={myExercise.room.description || 'No description'}
                                     onError={(e) => { e.target.src = 'default-image-url.jpg'; }}
                                 />
@@ -56,4 +56,4 @@ const Myexercise = () => {
     );
 };
 
-export default Myexercise;
+export default MyExercise;
