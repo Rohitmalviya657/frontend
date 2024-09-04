@@ -1,39 +1,30 @@
-import React, { useState } from 'react';
-import './styles.css';
+import React from 'react';
+import './Searchbar.css';
 
-const SearchBar = ({ onSearch }) => {
-    const [location, setLocation] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-
-    const handleSearch = () => {
-        onSearch({ location, minPrice, maxPrice });
-    };
-
+const SearchBar = ({ onPriceChange, onMinPriceChange, onLocationChange, priceFilter, minPriceFilter, locationFilter }) => {
     return (
-        <div className="search-bar">
-            <div>
-                <input
-                    type="text"
-                    placeholder="Location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    style={{ width: '80%' }}
-                />
-            </div>
-            <input
-                type="number"
-                placeholder="Min Price"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-            />
+        <div className="search-bar-container">
             <input
                 type="number"
                 placeholder="Max Price"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                value={priceFilter}
+                onChange={(e) => onPriceChange(e.target.value)}
+                className="search-input"
             />
-            <button onClick={handleSearch}>Search</button>
+            <input
+                type="number"
+                placeholder="Min Price"
+                value={minPriceFilter}
+                onChange={(e) => onMinPriceChange(e.target.value)}
+                className="search-input"
+            />
+            <input
+                type="text"
+                placeholder="Location"
+                value={locationFilter}
+                onChange={(e) => onLocationChange(e.target.value)}
+                className="search-input"
+            />
         </div>
     );
 };

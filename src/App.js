@@ -1,6 +1,7 @@
 import './App.css';
 
 import TenentHeader from './Component/TenentHeader.js';  // Corrected import for TenantHeader
+import Viewbooking from './Component/ViewBooking.js';
 import LandlordHeader from './Component/LandlordHeader.js';  // Import LandlordHeader
 import Footer from './Component/Footer.js';
 import React, { useState } from 'react';
@@ -20,6 +21,7 @@ import Headerr from './LoginHeader.js';  // This appears to be the login header
 import Registration from './Component/Registration.js';
 import Welcome from './Component/Welcome.js';
 import Login from './Component/Login.js';
+import SearchBar from './Component/SearchBar.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,6 +46,7 @@ function App() {
         {!isLoggedIn ? (
           <>
             <Headerr />
+
             <Routes>
               <Route path='/' element={<Welcome />} />
               <Route path='/about' element={<About />} />
@@ -55,8 +58,12 @@ function App() {
           </>
         ) : (
           <>
-            {role === 'tenant' ? (
+            {role === 'tenant' ? (<>
               <TenentHeader onLogout={handleLogout} />
+
+              {/* < SearchBar></ SearchBar> */}
+            </>
+
             ) : role === 'landlord' ? (
               <LandlordHeader onLogout={handleLogout} />
             ) : (
@@ -67,9 +74,10 @@ function App() {
               <Route path='/profile' element={<UserProfile />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/payment' element={<Payment />} />
-              <Route path='/myrooms' element={role === 'tenant' ? <Myrooms /> : <LandlordHome />} />
+              <Route path='/myrooms' element={role === 'tenant' ? <Viewbooking></Viewbooking> : <Myrooms />} />
               {/* Add additional routes if needed */}
             </Routes>
+
             <Footer />
           </>
         )}

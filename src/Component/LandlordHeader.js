@@ -26,8 +26,8 @@ function LandlordHeader({ onLogout }) {
             <Link to="/contact" className="header-link">
                 <small>Contact Us</small>
             </Link>
-            <Link to="/addroom" className="header-link">
-                <small>Add Room</small>
+            <Link to="/myrooms" className="header-link">
+                <small>My Rooms</small>
             </Link>
             <Link to="/" className="header-link" onClick={onLogout}>
                 <small>Logout</small>
