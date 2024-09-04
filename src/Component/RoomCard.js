@@ -1,45 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './book.css';
 
-function Pageee() {
-    const [categoryList, setCategoryList] = useState([]);
+const MyRooms = () => {
+    const [myRooms, setMyRooms] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        loadCategories();
+        const fetchMyRooms = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:4000/owner/get', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'tokenInput': token
+                    }
+                });
+                setMyRooms(response.data.fetch || []); // Ensure 'fetch' is correctly accessed
+            } catch (error) {
+                console.error('Error fetching rooms:', error);
+                setError('Failed to fetch rooms');
+            }
+        };
+
+        fetchMyRooms();
     }, []);
 
-    const loadCategories = async () => {
-        try {
-            let response = await axios.get("http://localhost:4000/user/Rooms");
-            // Assuming response.data.fetch is an array of room objects
-            setCategoryList(response.data.fetch || []);
-            console.log(response.data.fetch); // Check the data structure
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
-        <>
-            <div className="container mt-4">
-                <h1>Welcome to Room Nest Hub.com</h1>
-                <p>Your one-stop destination for finding the perfect home. Explore our listings and find your dream home today!</p>
-                <div className="row">
-                    {categoryList.map((room, index) => (
-                        <div className="col-md-4 mt-3" key={index}>
-                            <div className="card">
-                                <img src={room.image || "default-image-url"} height={250} className="card-img-top" alt={`Room ${index}`} />
-                                <div className="card-body">
-                                    <h5 className="card-title">Price: {room.price}</h5>
-                                    <button className="btn btn-primary">Room Add</button>
-                                </div>
+        <div className="my-room-container">
+            <h2>My Rooms</h2>
+            {error ? <p>{error}</p> : (
+                <div className="room-grid">
+                    {myRooms.length > 0 ? (
+                        myRooms.map((myRoom, index) => (
+                            <div key={myRoom.id || index} className="room-card">
+                                <img
+                                    src={myRoom.imgUrl || 'default-image-url.jpg'}
+                                    alt={myRoom.description || 'No description'}
+                                    onError={(e) => { e.target.src = 'default-image-url.jpg'; }}
+                                />
+                                <h3>{myRoom.description || 'No description'}</h3>
+                                <p>Location: {myRoom.location || 'Unknown'}</p>
+                                <p>Size: {myRoom.size || 'Unknown'}</p>
+                                <p className="amount">Amount Paid: ₹{myRoom.price || '0.00'}</p>
+                                <p className="date">Date: {new Date(myRoom.createdAt).toLocaleDateString()}</p>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p>No rooms found.</p>
+                    )}
                 </div>
-            </div>
-        </>
+            )}
+        </div>
     );
-}
+};
 
-export default Pageee;
+export default MyRooms;

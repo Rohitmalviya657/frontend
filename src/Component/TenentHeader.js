@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-function Header({ onLogout, role }) {
+function TenentHeader({ onLogout, role }) {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -20,9 +20,9 @@ function Header({ onLogout, role }) {
             <Link to="/" className="header-link">
                 <small>Home</small>
             </Link>
-            <Link to="/about" className="header-link">
+            {/* <Link to="/about" className="header-link">
                 <small>About Us</small>
-            </Link>
+            </Link> */}
             <Link to="/contact" className="header-link">
                 <small>Contact Us</small>
             </Link>
@@ -36,4 +36,4 @@ function Header({ onLogout, role }) {
     );
 }
 
-export default Header;
+export default TenentHeader;

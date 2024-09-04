@@ -1,6 +1,7 @@
 import './App.css';
 
-import Header from './Component/Header.js';
+import TenentHeader from './Component/TenentHeader.js';  // Corrected import for TenantHeader
+import LandlordHeader from './Component/LandlordHeader.js';  // Import LandlordHeader
 import Footer from './Component/Footer.js';
 import React, { useState } from 'react';
 import Home from './Component/Home.js';
@@ -11,11 +12,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import UserProfile from './Component/Profile.js';
 import LandlordHome from './Component/LandlordHome.js';
 import TenantHome from './Component/TenantHome.js';
-//import ViewBooking from './Component/ViewBooking'; // Import ViewBooking
 import { UserProvider } from './Component/UserContext.js';
 import Payment from './Component/Payment.js';
-import Myexercise from './Component/ViewBooking.js';
-import Headerr from './LoginHeader.js';
+import Myrooms from './Component/RoomCard.js'; // Assuming this is the component for viewing rooms
+
+import Headerr from './LoginHeader.js';  // This appears to be the login header
 import Registration from './Component/Registration.js';
 import Welcome from './Component/Welcome.js';
 import Login from './Component/Login.js';
@@ -44,27 +45,31 @@ function App() {
           <>
             <Headerr />
             <Routes>
-              <Route path='/' element={< Welcome />}></Route>
+              <Route path='/' element={<Welcome />} />
               <Route path='/about' element={<About />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/signIn' element={<Home onLogin={handleLogin} />} />
+              <Route path='/register' element={<Registration />} />
+              <Route path='/login' element={<Login />} />
             </Routes>
           </>
-
         ) : (
           <>
-            <Header onLogout={handleLogout} role={role} />
+            {role === 'tenant' ? (
+              <TenentHeader onLogout={handleLogout} />
+            ) : role === 'landlord' ? (
+              <LandlordHeader onLogout={handleLogout} />
+            ) : (
+              <TenentHeader onLogout={handleLogout} /> // Fallback header
+            )}
             <Routes>
               <Route path='/' element={role === 'landlord' ? <LandlordHome /> : <TenantHome />} />
               <Route path='/profile' element={<UserProfile />} />
-              <Route path='/about' element={<About />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/payment' element={<Payment />} />
-
-              <Route path='/viewbooking' element={<Myexercise></Myexercise>} />
+              <Route path='/myrooms' element={role === 'tenant' ? <Myrooms /> : <LandlordHome />} />
+              {/* Add additional routes if needed */}
             </Routes>
-            {/* <ViewBooking></ViewBooking> */}
-
             <Footer />
           </>
         )}
