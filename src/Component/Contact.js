@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import axios from 'axios';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -8,15 +9,26 @@ const Contact = () => {
         message: ''
     });
 
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Successfully Done');
-        setFormData({ name: '', email: '', message: '' }); // Clear the form
+
+        try {
+            const response = await axios.post('http://localhost:4000/api/contact', formData);
+            if (response.status === 200) {
+                setSuccess(true);
+                setFormData({ name: '', email: '', message: '' }); // Clear the form
+            }
+        } catch (err) {
+            setError('Failed to send message. Please try again later.');
+        }
     };
 
     return (
@@ -54,6 +66,8 @@ const Contact = () => {
 
                 <button type="submit">Send Message</button>
             </form>
+            {success && <p className="success-message">Message sent successfully!</p>}
+            {error && <p className="error-message">{error}</p>}
         </div>
     );
 }
