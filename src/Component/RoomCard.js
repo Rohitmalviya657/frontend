@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './book.css'
+import './Myrooms.css';
 
 const MyRooms = () => {
     const [myRooms, setMyRooms] = useState([]);
@@ -16,7 +16,7 @@ const MyRooms = () => {
                         'tokenInput': token
                     }
                 });
-                setMyRooms(response.data.fetch || []); // Ensure 'fetch' is correctly accessed
+                setMyRooms(response.data.fetch || []);
             } catch (error) {
                 console.error('Error fetching rooms:', error);
                 setError('Failed to fetch rooms');
@@ -25,6 +25,26 @@ const MyRooms = () => {
 
         fetchMyRooms();
     }, []);
+
+
+    const removeRoom = async (Roomid) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:4000/rooms/roomsdelete/${Roomid}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'tokenInput': token
+                }
+            });
+
+
+            setMyRooms(myRooms.filter((room) => room.Roomid !== Roomid));
+        } catch (error) {
+            console.error('Error removing room:', error);
+            setError('Failed to remove room');
+        }
+    };
+
 
     return (
         <div className="my-room-container">
@@ -44,6 +64,12 @@ const MyRooms = () => {
                                 <p>Size: {myRoom.size || 'Unknown'}</p>
                                 <p className="amount">Amount Paid: ₹{myRoom.price || '0.00'}</p>
                                 <p className="date">Date: {new Date(myRoom.createdAt).toLocaleDateString()}</p>
+                                <button
+                                    className="remove-button"
+                                    onClick={() => removeRoom(myRoom.Roomid)}
+                                >
+                                    Remove Room
+                                </button>
                             </div>
                         ))
                     ) : (

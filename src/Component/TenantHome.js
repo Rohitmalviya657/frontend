@@ -170,7 +170,7 @@ function TenantHome() {
                         }
                     });
                     await axios.put('http://localhost:4000/rooms/stock', { Roomid: room.Roomid, stock: 0 })
-                    alert(`Room ${room.roomId} booked successfully!`);
+                    alert(`Room ${room.Roomid} booked successfully!`);
                 } catch (error) {
                     console.error('Error booking the room:', error);
                 }

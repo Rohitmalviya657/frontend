@@ -23,7 +23,7 @@ function Headerr({ onLogout, role }) {
             <Link to="/contact" className="header-link">
                 <small>Contact Us</small>
             </Link>
-            <Link to="/ourServices" className="header-link">
+            <Link to="/ourservice" className="header-link">
                 <small>Our Services</small>
             </Link>
             <Link to="/signIn" className="header-link">
